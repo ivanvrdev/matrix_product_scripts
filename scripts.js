@@ -20,11 +20,11 @@ const showMatrix = (tagId, matrix) =>{
     documentTag.append(table)
 }
 
-const showMatirxValuesForm = (rows, cols) =>{
+const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
     let content = document.getElementById("content")
     //título
     let title = document.createElement('h2')
-    title.innerHTML = "Inserte los valores de la matriz"
+    title.innerHTML = `Inserte los valores de la matriz ${matrixNumber}`
     content.append(title)
     //tabla
     let table = document.createElement('table')
@@ -111,10 +111,12 @@ startButton.addEventListener("click", ()=>{
 dimensionForm.addEventListener("submit", (e)=>{
     e.preventDefault()
     dimensionForm.remove()
-    showMatirxValuesForm(2, 4)
+    showMatirxValuesForm(1, 2, 4)
+    showMatirxValuesForm(2, 4, 2)
+
 })
 
-
+//dividir la navegación en secciones consecutivas que se pasen con un "siguiente"
 
 // const matrix1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
 // const matrix2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
