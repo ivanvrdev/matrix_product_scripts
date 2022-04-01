@@ -20,6 +20,60 @@ const showMatrix = (tagId, matrix) =>{
     documentTag.append(table)
 }
 
+const showMatirxValuesForm = (rows, cols) =>{
+    let content = document.getElementById("content")
+    //título
+    let title = document.createElement('h2')
+    title.innerHTML = "Inserte los valores de la matriz"
+    content.append(title)
+    //tabla
+    let table = document.createElement('table')
+    let thead = document.createElement('thead')
+    //celda de la esquina
+    let trThead = document.createElement('tr')
+    let firstTh = document.createElement('th')
+    firstTh.innerHTML = "#"
+    trThead.append(firstTh)
+    thead.append(trThead)
+    //carga de los encabezado de las columnas
+    for (let i = 0; i < cols; i++) {
+        let th = document.createElement('th')
+        th.innerHTML = `Columna ${i + 1}`
+        trThead.append(th)
+    }
+    table.append(thead)
+    //carga de las filas
+
+    let tbody = document.createElement('tbody')
+
+    for (let i = 0; i < rows; i++) {
+        let tr = document.createElement('tr')
+        //encabezado de la fila
+        let th = document.createElement('th')
+        th.innerHTML = `Fila ${i + 1}`
+        tr.append(th)
+
+        for (let j = 0; j < cols; j++) {
+            //celda
+            let td = document.createElement('td')
+            //input
+            let input = document.createElement('input')
+            input.type = "Number"
+            input.placeholder = `columna ${j + 1}`
+            //agregamos input a la celda
+            td.append(input)
+            //agregamos celda a la fila
+            tr.append(td)
+        }
+        //agregamos fila al cuerpo de la tabla
+        tbody.append(tr)
+    }
+    //agregamos cuerpo a la tabla
+    table.append(tbody)
+    //renderizamos tabla
+    content.append(table)
+}
+
 const multiplyArrays = (matrix1, matrix2) =>{
     let productMatrix = []
     
@@ -39,13 +93,28 @@ const multiplyArrays = (matrix1, matrix2) =>{
     return productMatrix
 }
 
+//lugar donde se van a renderizar los componentes de la página
 const contentDiv = document.getElementById('content')
-
+//botón para empezar
 const startButton = document.getElementById('start_button')
+//formulario para indicar las dimesiones de las matrices
+const dimensionForm = document.getElementById('dimension_form')
+//no mostrar el formulario al renderizar la página
+
+dimensionForm.remove()
 
 startButton.addEventListener("click", ()=>{
     startButton.remove()
+    contentDiv.append(dimensionForm)
 })
+
+dimensionForm.addEventListener("submit", (e)=>{
+    e.preventDefault()
+    dimensionForm.remove()
+    showMatirxValuesForm(2, 4)
+})
+
+
 
 // const matrix1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
 // const matrix2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
