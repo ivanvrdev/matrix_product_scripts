@@ -13,8 +13,10 @@
     </header>
     <article>
         <div id="content">
+            <!-- Inicio -->
             <button type="button" id="start_button">Empezar</button>
-            <form action="#" id="dimension_form">
+            <!-- Formulario de dimensiones -->
+            <form action="#" id="dimension_form" name="dimension_form">
                 <h2>Dimensiones de las matrices</h2>
                 <p>Matriz 1</p>
                 <input type="number" name="rows_matrix_1" id="rows_matrix_1" placeholder="filas">
@@ -24,10 +26,12 @@
                 <input type="number" name="cols_matrix_2" id="cols_matrix_2" placeholder="columnas">
                 <button type="submit">Cargar</button>
             </form>
-            <form action="#" id="values_form_matrix_1"></form>
-            <form action="#" id="values_form_matrix_1"></form>
+            <!-- Formulario de valores de la matriz -->
+            <form action="#" id="values_form_matrix">
+                <button type="submit">Calcular</button>
+            </form>
         </div>
-
+        <!-- Renderizado de las matrices -->
         <div id="matriz1" class="matrix"></div>
         <div id="matriz2" class="matrix"></div>
         <div id="matriz3" class="matrix"></div>
