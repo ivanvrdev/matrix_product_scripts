@@ -1,24 +1,20 @@
-html {
-    font-family: sans-serif;
-  }
-  
-  table {
+    .matrix-table {
     border-collapse: collapse;
     border: 2px solid rgb(31, 97, 141);
     letter-spacing: 1px;
     font-size: 0.8rem;
   }
   
-  td, th {
+  .matrix-td, .matrix-th {
     border: 2px solid rgb(31, 97, 141);
     padding: 10px 20px;
   }
   
-  th {
+  .matrix-th {
     background-color: rgb(253,254,254);
   }
   
-  td {
+  .matrix-td {
     text-align: center;
   }
   
