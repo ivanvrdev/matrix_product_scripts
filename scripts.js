@@ -25,44 +25,47 @@ const validateDimensionForm = (colsMatrix1, rowsMatrix2) => {
 }
 
 const showAlert = (message, color) =>{
+    let divAlert = document.getElementById("alert")
+
     let alert = document.createElement('p')
     alert.id = "alert"
     alert.innerHTML = message
-    alert.style.backgroundColor = color
-    alert.style.color = "white"
+    alert.className = `alert alert-${color}`
 
-    contentDiv.prepend(alert)
+    divAlert.append(alert)
 
     setTimeout(()=>{
-        document.getElementById("alert").remove()
-    }, 3000)
+        divAlert.remove()
+    }, 2000)
 }
 
 const showMatrix = (tagId, matrix) =>{
     let documentTag = document.getElementById(tagId)
     let table = document.createElement("table")
+    table.className = "matrix-table"
     
     matrix.forEach(row =>{
         let tr = document.createElement('tr')
         row.forEach(item => {
             let td = document.createElement('td')
             td.innerHTML = item
+            td.className = "matrix-td"
             tr.append(td)
         })
         table.append(tr)
     })
-    
     documentTag.append(table)
 }
 
 const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
-    let content = document.getElementById("content")
     //título
     let title = document.createElement('h2')
     title.innerHTML = `Inserte los valores de la matriz ${matrixNumber}`
     
     //tabla
     let table = document.createElement('table')
+    table.className = "table table-borderless"
+
     let thead = document.createElement('thead')
     //celda de la esquina
     let trThead = document.createElement('tr')
@@ -94,6 +97,7 @@ const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
             //input
             let input = document.createElement('input')
             input.type = "Number"
+            input.className = "form-control"
             input.placeholder = `columna ${j + 1}`
             input.id = `matriz_${matrixNumber}_fila_${i + 1}_columna_${j+1}`
             //agregamos input a la celda
@@ -173,14 +177,19 @@ dimensionForm.addEventListener("submit", (e)=>{
 
         let button = document.createElement('button')
         button.type = "submit"
+        button.className = "btn btn-primary"
         button.innerHTML = "Calcular"
 
-        arraysValuesForm.append(button)
+        let divButton = document.createElement("div")
+        divButton.className = "d-grid"
+
+        divButton.append(button)
+        arraysValuesForm.append(divButton)
 
         contentDiv.append(arraysValuesForm)
         
     }else{
-        showAlert("Deben coincidir las columnas de la primera matriz con las filas de la segunda para que sean mulpilicables", "red")
+        showAlert("Deben coincidir las columnas de la primera matriz con las filas de la segunda para que sean mulpilicables", "danger")
     }
 })
 
@@ -191,6 +200,22 @@ arraysValuesForm.addEventListener("submit", (e)=>{
     let productMatrix = multiplyArrays(matrices[0].value, matrices[1].value)
 
     arraysValuesForm.remove()
+
+    let divMatrix1 = document.getElementById("matriz1")
+    let divMatrix2 = document.getElementById("matriz2")
+    let divMatrix3 = document.getElementById("matriz3")
+
+    let p1 = document.createElement("p")
+    let p2 = document.createElement("p")
+    let p3 = document.createElement("p")
+
+    p1.innerHTML = "Matriz 1"
+    p2.innerHTML = "Matriz 2"
+    p3.innerHTML = "Matriz producto"
+
+    divMatrix1.append(p1)
+    divMatrix2.append(p2)
+    divMatrix3.append(p3)
 
     showMatrix("matriz1", matrices[0].value)
     showMatrix("matriz2", matrices[1].value)
