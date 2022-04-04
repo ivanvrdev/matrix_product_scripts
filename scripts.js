@@ -60,7 +60,7 @@ const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
     //título
     let title = document.createElement('h2')
     title.innerHTML = `Inserte los valores de la matriz ${matrixNumber}`
-    content.append(title)
+    
     //tabla
     let table = document.createElement('table')
     let thead = document.createElement('thead')
@@ -107,7 +107,9 @@ const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
     //agregamos cuerpo a la tabla
     table.append(tbody)
     //renderizamos tabla
-    arraysValuesForm.prepend(table)
+
+    arraysValuesForm.append(title)
+    arraysValuesForm.append(table)
 }
 
 const getArraysValues = (matrixNumber, rows, cols) =>{
@@ -168,6 +170,12 @@ dimensionForm.addEventListener("submit", (e)=>{
         //muestra los formularios de los valores de las matrices
         showMatirxValuesForm(1, rowsMatrix1, colsMatrix1)
         showMatirxValuesForm(2, rowsMatrix2, colsMatrix2)
+
+        let button = document.createElement('button')
+        button.type = "submit"
+        button.innerHTML = "Calcular"
+
+        arraysValuesForm.append(button)
 
         contentDiv.append(arraysValuesForm)
         
