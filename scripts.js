@@ -3,6 +3,7 @@
 //cargar las matrices
 //multiplicar las matrices
 
+//almacena la información de las matrices ingresadas
 let matrices = []
 
 //lugar donde se van a renderizar los componentes de la página
@@ -11,34 +12,38 @@ const contentDiv = document.getElementById('content')
 const startButton = document.getElementById('start_button')
 //formulario para indicar las dimesiones de las matrices
 const dimensionForm = document.getElementById('dimension_form')
-
+//formulario para cargar las matrices
 const arraysValuesForm = document.getElementById("values_form_matrix")
 
 //no mostrar el formulario al renderizar la página
 dimensionForm.remove()
 arraysValuesForm.remove()
 
-const validateDimensionForm = (colsMatrix1, rowsMatrix2) => {
-    // console.log(parseInt(colsMatrix1) === parseInt(rowsMatrix2))
 
+//validaciones del formulario de dimensiones
+const validateSizeForm = (colsMatrix1, rowsMatrix2) => {
+    // console.log(parseInt(colsMatrix1) === parseInt(rowsMatrix2))
     return parseInt(colsMatrix1) === parseInt(rowsMatrix2)
 }
 
+const validateSizeValuesForm = (rows1, cols1, rows2, cols2) =>{
+    return rows1 > 0 && cols1 > 0 && rows2 > 0 && cols2 > 0
+}
+
+//alertas dinámicas
 const showAlert = (message, color) =>{
     let divAlert = document.getElementById("alert")
 
-    let alert = document.createElement('p')
-    alert.id = "alert"
-    alert.innerHTML = message
-    alert.className = `alert alert-${color}`
-
-    divAlert.append(alert)
+    divAlert.innerHTML = message
+    divAlert.className = `alert alert-${color}`
 
     setTimeout(()=>{
-        divAlert.remove()
-    }, 2000)
+        divAlert.innerHTML = ""
+        divAlert.className = ""
+    }, 3000)
 }
 
+//renderizado de matrices
 const showMatrix = (tagId, matrix) =>{
     let documentTag = document.getElementById(tagId)
     let table = document.createElement("table")
@@ -57,6 +62,7 @@ const showMatrix = (tagId, matrix) =>{
     documentTag.append(table)
 }
 
+//renderizado de inputs del formlario de carga de matrices
 const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
     //título
     let title = document.createElement('h2')
@@ -116,14 +122,19 @@ const showMatirxValuesForm = (matrixNumber, rows, cols) =>{
     arraysValuesForm.append(table)
 }
 
+//obtiene los valores del formulario de carga 
 const getArraysValues = (matrixNumber, rows, cols) =>{
     let matrix = []
 
     for (let i = 0; i < rows; i++) {
         let row = []
         for (let j = 0; j < cols; j++) {
-            let item = document.getElementById(`matriz_${matrixNumber}_fila_${i + 1}_columna_${j + 1}`).value
-            row[j] = item
+            let item = document.getElementById(`matriz_${matrixNumber}_fila_${i + 1}_columna_${j + 1}`)
+            if(item.value){
+                row[j] = item.value
+            }else{
+                row[j] = 0 
+            }
         }
         matrix[i] = row
     }
@@ -131,6 +142,7 @@ const getArraysValues = (matrixNumber, rows, cols) =>{
     return matrix
 }
 
+//multiplica las matrices
 const multiplyArrays = (matrix1, matrix2) =>{
     let productMatrix = []
     
@@ -168,29 +180,34 @@ dimensionForm.addEventListener("submit", (e)=>{
     matrices[0] = {rows: rowsMatrix1, cols: colsMatrix1}
     matrices[1] = {rows: rowsMatrix2, cols: colsMatrix2}
 
-    if(validateDimensionForm(colsMatrix1, rowsMatrix2)){
-        //saca el formulario de las dimensiones
-        dimensionForm.remove()
-        //muestra los formularios de los valores de las matrices
-        showMatirxValuesForm(1, rowsMatrix1, colsMatrix1)
-        showMatirxValuesForm(2, rowsMatrix2, colsMatrix2)
-
-        let button = document.createElement('button')
-        button.type = "submit"
-        button.className = "btn btn-primary"
-        button.innerHTML = "Calcular"
-
-        let divButton = document.createElement("div")
-        divButton.className = "d-grid"
-
-        divButton.append(button)
-        arraysValuesForm.append(divButton)
-
-        contentDiv.append(arraysValuesForm)
-        
-    }else{
-        showAlert("Deben coincidir las columnas de la primera matriz con las filas de la segunda para que sean mulpilicables", "danger")
+    if(!validateSizeValuesForm(rowsMatrix1, colsMatrix1, rowsMatrix2, colsMatrix2)){
+        showAlert("Los valores ingresados deben ser positivos.(Mayores a 0)", "danger")
+        return
     }
+
+    if(!validateSizeForm(colsMatrix1, rowsMatrix2)){
+        showAlert("Deben coincidir las columnas de la primera matriz con las filas de la segunda para que sean mulpilicables", "danger")
+        return
+    }
+
+    //saca el formulario de las dimensiones
+    dimensionForm.remove()
+    //muestra los formularios de los valores de las matrices
+    showMatirxValuesForm(1, rowsMatrix1, colsMatrix1)
+    showMatirxValuesForm(2, rowsMatrix2, colsMatrix2)
+    
+    let button = document.createElement('button')
+    button.type = "submit"
+    button.className = "btn btn-primary"
+    button.innerHTML = "Calcular"
+    
+    let divButton = document.createElement("div")
+    divButton.className = "d-grid"
+    
+    divButton.append(button)
+    arraysValuesForm.append(divButton)
+    
+    contentDiv.append(arraysValuesForm)
 })
 
 arraysValuesForm.addEventListener("submit", (e)=>{
@@ -205,28 +222,34 @@ arraysValuesForm.addEventListener("submit", (e)=>{
     let divMatrix2 = document.getElementById("matriz2")
     let divMatrix3 = document.getElementById("matriz3")
 
-    let p1 = document.createElement("p")
-    let p2 = document.createElement("p")
-    let p3 = document.createElement("p")
+    let pMatrixName1 = document.createElement("p")
+    let pMatrixName2 = document.createElement("p")
+    let pMatrixName3 = document.createElement("p")
 
-    p1.innerHTML = "Matriz 1"
-    p2.innerHTML = "Matriz 2"
-    p3.innerHTML = "Matriz producto"
+    let pMatrixSize1 = document.createElement("p")
+    let pMatrixSize2 = document.createElement("p")
+    let pMatrixSize3 = document.createElement("p")
 
-    divMatrix1.append(p1)
-    divMatrix2.append(p2)
-    divMatrix3.append(p3)
+    pMatrixName1.innerHTML = "Matriz 1"
+    pMatrixName2.innerHTML = "Matriz 2"
+    pMatrixName3.innerHTML = "Matriz producto"
+
+    pMatrixSize1.innerHTML = `${matrices[0].rows} x ${matrices[0].cols}`
+    pMatrixSize2.innerHTML = `${matrices[1].rows} x ${matrices[1].cols}`
+    pMatrixSize3.innerHTML = `${productMatrix.length} x ${productMatrix[0].length}`
+
+    divMatrix1.append(pMatrixName1)
+    divMatrix2.append(pMatrixName2)
+    divMatrix3.append(pMatrixName3)
 
     showMatrix("matriz1", matrices[0].value)
     showMatrix("matriz2", matrices[1].value)
     showMatrix("matriz3", productMatrix)
+
+    divMatrix1.append(pMatrixSize1)
+    divMatrix2.append(pMatrixSize2)
+    divMatrix3.append(pMatrixSize3)
 })
-
-
-
-
-
-//dividir la navegación en secciones consecutivas que se pasen con un "siguiente"
 
 // const matrix1 = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]]
 // const matrix2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
